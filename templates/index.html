@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StyleForge</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&family=Fraunces:ital,wght@0,300;0,600;1,300;1,600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg:        #0c0c0c;
+  --bg-card:   #131313;
+  --bg-lift:   #1a1a1a;
+  --border:    #272727;
+  --border-hi: #3a3a3a;
+  --text-1:    #f0ede6;
+  --text-2:    #a09a90;
+  --text-3:    #5c5852;
+  --amber:     #d97c2a;
+  --amber-lo:  #3d2208;
+  --amber-hi:  #f5a14a;
+  --teal:      #1db891;
+  --teal-lo:   #052e22;
+  --teal-hi:   #4ddab8;
+  --red-lo:    #2e0808;
+  --red:       #c84040;
+  --radius:    14px;
+  --radius-sm: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Mono', monospace;
+  background: var(--bg);
+  color: var(--text-1);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ─── GRAIN OVERLAY ─── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ─── NAVBAR ─── */
+.navbar {
+  background: rgba(12,12,12,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 0;
+}
+.navbar-brand {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: var(--text-1) !important;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.navbar-brand span { color: var(--amber); }
+.nav-link {
+  color: var(--text-2) !important;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-link:hover { color: var(--text-1) !important; }
+.btn-nav {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.45rem 1.1rem;
+  border: 1px solid var(--border-hi);
+  border-radius: 999px;
+  color: var(--text-1);
+  background: transparent;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+.btn-nav:hover { border-color: var(--amber); color: var(--amber); }
+
+/* ─── HERO ─── */
+.hero {
+  padding: 9rem 0 5rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.hero-label::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--amber);
+}
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-weight: 600;
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  line-height: 1.0;
+  color: var(--text-1);
+  margin-bottom: 1.5rem;
+}
+.hero h1 em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--text-2);
+}
+.hero p {
+  font-size: 0.85rem;
+  color: var(--text-2);
+  line-height: 1.9;
+  max-width: 420px;
+}
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 60px 60px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 80% at 80% 50%, black 0%, transparent 70%);
+  mask-image: radial-gradient(ellipse 80% 80% at 80% 50%, black 0%, transparent 70%);
+  opacity: 0.35;
+}
+.hero-orb {
+  position: absolute;
+  right: 10%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(217,124,42,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* ─── SECTION DIVIDER ─── */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0;
+}
+.section-tag {
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.section-tag::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* ─── CARDS ─── */
+.card-dark {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.25s;
+}
+.card-dark:focus-within {
+  border-color: var(--amber);
+}
+.card-header-dark {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.card-header-dark .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--border-hi);
+}
+.card-header-dark .dot.active { background: var(--amber); }
+.card-header-dark .label {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  flex: 1;
+  text-align: center;
+}
+
+/* ─── IMAGE PREVIEW ─── */
+.img-drop {
+  position: relative;
+  height: 280px;
+  background: var(--bg);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.img-drop img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.img-drop-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--text-3);
+  pointer-events: none;
+}
+.img-drop-placeholder .icon {
+  width: 40px;
+  height: 40px;
+  border: 1.5px dashed var(--border-hi);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+.img-drop-placeholder .text {
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+}
+
+/* ─── FILE INPUT ─── */
+.file-row {
+  padding: 0.9rem 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-top: 1px solid var(--border);
+}
+.file-row input[type="file"] {
+  font-size: 0.75rem;
+  color: var(--text-2);
+  background: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;
+}
+.file-row input[type="file"]::-webkit-file-upload-button {
+  background: var(--bg-lift);
+  border: 1px solid var(--border-hi);
+  color: var(--text-1);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  margin-right: 0.75rem;
+  transition: border-color 0.2s;
+  font-family: 'DM Mono', monospace;
+}
+.file-row input[type="file"]::-webkit-file-upload-button:hover {
+  border-color: var(--amber);
+}
+
+/* ─── ALPHA SLIDER ─── */
+.slider-section {
+  padding: 2rem 0;
+}
+.slider-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.slider-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+.slider-val {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.5rem;
+  color: var(--amber-hi);
+  min-width: 2.5rem;
+  text-align: right;
+}
+
+input[type="range"]#alphaRange {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]#alphaRange::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--amber);
+  border: 3px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--amber);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+input[type="range"]#alphaRange::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.ticks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+.ticks span {
+  font-size: 0.62rem;
+  color: var(--text-3);
+}
+
+/* ─── SUBMIT BUTTON ─── */
+.btn-forge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--amber);
+  border: none;
+  border-radius: 999px;
+  padding: 1rem 2.5rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-forge:hover {
+  background: var(--amber-hi);
+  transform: translateY(-1px);
+}
+.btn-forge:active { transform: scale(0.98); }
+.btn-forge svg { width: 16px; height: 16px; }
+
+/* ─── RESULT ─── */
+.result-wrap {
+  margin-top: 4rem;
+}
+.result-card {
+  background: var(--bg-card);
+  border: 1px solid var(--teal);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.result-header {
+  padding: 1rem 1.5rem;
+  background: var(--teal-lo);
+  border-bottom: 1px solid var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.result-header .r-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal-hi);
+}
+.result-header .r-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  color: var(--teal-hi);
+}
+.pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--teal);
+  animation: pulsate 1.8s ease-in-out infinite;
+}
+@keyframes pulsate {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(0.75); }
+}
+.result-img {
+  display: block;
+  width: 100%;
+  max-height: 600px;
+  object-fit: contain;
+  background: var(--bg);
+}
+.result-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: right;
+}
+.btn-dl {
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.5rem 1.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--teal);
+  color: var(--teal-hi);
+  background: transparent;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.btn-dl:hover { background: var(--teal-lo); color: var(--teal-hi); }
+
+/* ─── ERROR ─── */
+.err-bar {
+  background: var(--red-lo);
+  border: 1px solid var(--red);
+  border-radius: var(--radius-sm);
+  padding: 0.9rem 1.25rem;
+  font-size: 0.8rem;
+  color: #e88;
+  margin-top: 1.5rem;
+}
+
+/* ─── EXAMPLES ─── */
+.ex-section { padding: 5rem 0; }
+.ex-flow {
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  gap: 0;
+  align-items: center;
+}
+@media(max-width:767px){
+  .ex-flow { grid-template-columns: 1fr; }
+  .ex-arrow { transform: rotate(90deg); }
+}
+.ex-inputs { display: grid; gap: 1rem; }
+.ex-role {
+  font-size: 0.65rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.ex-img {
+  width: 100%;
+  height: 200px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+.ex-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--amber);
+  font-size: 1.25rem;
+}
+.ex-item {
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+}
+
+/* ─── FAQ ─── */
+.faq-section { padding: 4rem 0; }
+.accordion-item {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+}
+.accordion-button {
+  background: var(--bg-card) !important;
+  color: var(--text-1) !important;
+  font-family: 'DM Mono', monospace !important;
+  font-size: 0.82rem !important;
+  letter-spacing: 0.04em;
+  box-shadow: none !important;
+}
+.accordion-button:not(.collapsed) {
+  color: var(--amber-hi) !important;
+  background: var(--amber-lo) !important;
+}
+.accordion-button::after {
+  filter: invert(1) sepia(1) saturate(2) hue-rotate(10deg);
+}
+.accordion-body {
+  background: var(--bg-card);
+  color: var(--text-2);
+  font-size: 0.8rem;
+  line-height: 1.8;
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  padding: 4rem 0 2rem;
+  color: var(--text-2);
+}
+.footer-brand {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-1);
+  margin-bottom: 0.75rem;
+}
+.footer-brand span { color: var(--amber); }
+.footer h6 {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-3);
+  margin-bottom: 1.25rem;
+}
+.footer a {
+  color: var(--text-2);
+  text-decoration: none;
+  font-size: 0.8rem;
+  display: block;
+  margin-bottom: 0.6rem;
+  transition: color 0.2s;
+}
+.footer a:hover { color: var(--amber); }
+.footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--text-3);
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.social-btn {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-2) !important;
+  font-size: 0.8rem;
+  margin-bottom: 0 !important;
+  transition: all 0.2s;
+}
+.social-btn:hover { border-color: var(--amber); color: var(--amber) !important; }
+
+/* ─── LOADER ─── */
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12,12,12,0.93);
+  backdrop-filter: blur(8px);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.loader-overlay.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.loader-ring {
+  width: 56px;
+  height: 56px;
+  border: 2px solid var(--border);
+  border-top-color: var(--amber);
+  border-right-color: var(--amber-hi);
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.loader-text {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-1);
+}
+.loader-sub {
+  font-size: 0.72rem;
+  color: var(--text-3);
+  letter-spacing: 0.1em;
+}
+
+/* ─── CANVAS ─── */
+#neuralCanvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* ─── FADE-IN ─── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: fadeUp 0.7s ease forwards;
+}
+.fade-up:nth-child(2) { animation-delay: 0.1s; }
+.fade-up:nth-child(3) { animation-delay: 0.2s; }
+@keyframes fadeUp {
+  to { opacity: 1; transform: none; }
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border-hi); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--amber); }
+</style>
+</head>
+<body>
+
+<canvas id="neuralCanvas"></canvas>
+
+<!-- ─── NAVBAR ─── -->
+<nav class="navbar navbar-expand-lg fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">Style<span>Forge</span></a>
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+      <span style="display:block;width:22px;height:1.5px;background:var(--text-1);margin:5px 0;"></span>
+      <span style="display:block;width:16px;height:1.5px;background:var(--text-1);margin:5px 0;"></span>
+      <span style="display:block;width:22px;height:1.5px;background:var(--text-1);margin:5px 0;"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMain">
+    
+    </div>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero" style="position:relative;z-index:1;">
+  <div class="hero-grid"></div>
+  <div class="hero-orb"></div>
+  <div class="container" style="position:relative;z-index:2;">
+    <div class="row align-items-center">
+      <div class="col-lg-7">
+        <p class="hero-label">Neural Style Transfer — AdaIN Architecture</p>
+        <h1>Transform<br><em>any image</em><br>into art.</h1>
+        <p style="margin-top:1.5rem;">Upload a photograph and any painting. Our trained network fuses their essence — preserving structure while reimagining texture, color, and brushwork.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ─── FORGE SECTION ─── -->
+<section style="padding:5rem 0;position:relative;z-index:1;">
+  <div class="container">
+    <p class="section-tag">01 — Upload & Configure</p>
+
+    <form method="post" enctype="multipart/form-data" id="uploadForm">
+      {{ form.hidden_tag() }}
+
+      <div class="row g-4 fade-up">
+        <!-- Content -->
+        <div class="col-md-6">
+          <div class="card-dark h-100">
+            <div class="card-header-dark">
+              <span class="dot active"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="label">Content Source</span>
+            </div>
+            <div class="p-3">
+              <div class="img-drop" id="contentPreview" onclick="document.getElementById('content-input').click()">
+                {% if content_image %}
+                  <img src="{{ url_for('send_image', filename=content_image) }}" alt="Content Image">
+                {% else %}
+                  <div class="img-drop-placeholder">
+                    <div class="icon">+</div>
+                    <span class="text">Drop or click to upload</span>
+                    <span style="font-size:0.65rem;color:var(--text-3);">JPG, PNG, WebP</span>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="file-row">
+              {{ form.content(class="", id="content-input", onchange="previewFile(this,'contentPreview')") }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Style -->
+        <div class="col-md-6">
+          <div class="card-dark h-100">
+            <div class="card-header-dark">
+              <span class="dot"></span>
+              <span class="dot active"></span>
+              <span class="dot"></span>
+              <span class="label">Style Reference</span>
+            </div>
+            <div class="p-3">
+              <div class="img-drop" id="stylePreview" onclick="document.getElementById('style-input').click()">
+                {% if style_image %}
+                  <img src="{{ url_for('send_image', filename=style_image) }}" alt="Style Image">
+                {% else %}
+                  <div class="img-drop-placeholder">
+                    <div class="icon">&#9670;</div>
+                    <span class="text">Drop or click to upload</span>
+                    <span style="font-size:0.65rem;color:var(--text-3);">Any painting or artwork</span>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+            <div class="file-row">
+              {{ form.style(class="", id="style-input", onchange="previewFile(this,'stylePreview')") }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="row justify-content-center mt-5 fade-up">
+        <div class="col-md-7">
+          <div class="card-dark p-4">
+            <div class="slider-section">
+              <div class="slider-label-row">
+                <span class="slider-label">Style Strength</span>
+                <span class="slider-val" id="alphaDisplay">1.0</span>
+              </div>
+              {{ form.alpha(id="alphaRange", type="range", min="0", max="1", step="0.1") }}
+              <div class="ticks">
+                <span>0.0</span><span>0.2</span><span>0.4</span><span>0.6</span><span>0.8</span><span>1.0</span>
+              </div>
+              <p style="margin-top:1rem;font-size:0.72rem;color:var(--text-3);line-height:1.7;">
+                Lower values preserve more of the original content. Higher values apply a stronger artistic transformation.
+              </p>
+            </div>
+            <div style="border-top:1px solid var(--border);padding-top:1.5rem;text-align:center;">
+              {{ form.submit(class="btn-forge") }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- Result -->
+    {% if result_image %}
+    <div class="result-wrap fade-up" id="resultSection">
+      <div class="result-card">
+        <div class="result-header">
+          <span class="r-label">Stylized Output</span>
+          <span class="r-status"><span class="pulse"></span> Ready</span>
+        </div>
+        <img src="{{ url_for('send_image', filename=result_image) }}" class="result-img" alt="Stylized Result">
+        <div class="result-footer">
+          <a href="{{ url_for('send_image', filename=result_image) }}" download class="btn-dl">&#8595; Download</a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="err-bar"><strong>Error:</strong> {{ error }}</div>
+    {% endif %}
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ─── EXAMPLES ─── -->
+<section class="ex-section" style="position:relative;z-index:1;">
+  <div class="container">
+    <p class="section-tag">02 — Example Transfers</p>
+    <div style="display:grid;gap:1.5rem;">
+
+      <div class="ex-item">
+        <div class="ex-flow">
+          <div class="ex-inputs">
+            <div>
+              <p class="ex-role">Content</p>
+              <img src="{{ url_for('send_example', filename='c_ex.jpg') }}" class="ex-img" alt="Content">
+            </div>
+            <div>
+              <p class="ex-role">Style</p>
+              <img src="{{ url_for('send_example', filename='s_ex.jpg') }}" class="ex-img" alt="Style">
+            </div>
+          </div>
+          <div class="ex-arrow">&#8594;</div>
+          <div>
+            <p class="ex-role">Output</p>
+            <img src="{{ url_for('send_example', filename='style_x.jpg') }}" class="ex-img" alt="Result" style="height:calc(200px*2 + 1rem);object-fit:contain;">
+          </div>
+        </div>
+      </div>
+
+      <div class="ex-item">
+        <div class="ex-flow">
+          <div class="ex-inputs">
+            <div>
+              <p class="ex-role">Content</p>
+              <img src="{{ url_for('send_example', filename='brad_pitt.jpg') }}" class="ex-img" alt="Content">
+            </div>
+            <div>
+              <p class="ex-role">Style</p>
+              <img src="{{ url_for('send_example', filename='sketch.png') }}" class="ex-img" alt="Style">
+            </div>
+          </div>
+          <div class="ex-arrow">&#8594;</div>
+          <div>
+            <p class="ex-role">Output</p>
+            <img src="{{ url_for('send_example', filename='stylized_brad_pitt.jpg') }}" class="ex-img" alt="Result" style="height:calc(200px*2 + 1rem);object-fit:contain;">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- ─── FAQ ─── -->
+<section class="faq-section" style="position:relative;z-index:1;">
+  <div class="container">
+    <p class="section-tag">03 — Frequently Asked</p>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="accordion" id="faqAccordion">
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                Is it a pretrained model?
+              </button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">No — we train the model ourselves using AdaIN-based architecture and custom data pipelines.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                Is this platform free to use?
+              </button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">This demo is currently available as a free experience — no account required.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                Which painting styles can be used?
+              </button>
+            </h2>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">Almost any painting style works — impressionist, cubist, watercolor, ink sketch, oil, abstract, and more. If you can photograph it, the model can transfer it.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                What's the tech stack?
+              </button>
+            </h2>
+            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">Python · PyTorch · Flask — with a custom AdaIN encoder-decoder architecture trained end-to-end.</div>
+            </div>
+          </div>
+
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                Which dataset was used for training?
+              </button>
+            </h2>
+            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body">The model is trained on large-scale image datasets covering diverse visual domains, painting genres, and photographic content.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer" style="position:relative;z-index:1;">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4 col-md-6">
+        <div class="footer-brand">Style<span>Forge</span></div>
+        <p style="font-size:0.8rem;line-height:1.9;margin-top:0.75rem;">"Every artist dips his brush in his own soul, and paints his own nature into his pictures."</p>
+      </div>
+      
+      
+      
+    </div>
+    <div class="col-lg-3 col-md-3 col-6">
+        <h6>Made by ~ Avneet</h6>
+      </div>
+    <div class="footer-bottom">
+      <span>© 2026 StyleForge Inc. All rights reserved.</span>
+      <span style="display:flex;gap:1.5rem;"><a href="#" style="color:var(--text-3);font-size:0.72rem;margin:0;">Privacy</a><a href="#" style="color:var(--text-3);font-size:0.72rem;margin:0;">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<!-- ─── LOADER ─── -->
+<div class="loader-overlay" id="loader">
+  <div class="loader-ring"></div>
+  <span class="loader-text">Processing</span>
+  <span class="loader-sub">Neural network is rendering…</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+// Preview uploaded files
+function previewFile(input, previewId) {
+  const wrap = document.getElementById(previewId);
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    wrap.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+  };
+  reader.readAsDataURL(file);
+}
+
+// Slider
+const range = document.getElementById('alphaRange');
+const display = document.getElementById('alphaDisplay');
+function updateSlider() {
+  const pct = ((range.value - range.min) / (range.max - range.min)) * 100;
+  display.textContent = parseFloat(range.value).toFixed(1);
+  range.style.background = `linear-gradient(to right, var(--amber) 0%, var(--amber-hi) ${pct}%, var(--border) ${pct}%)`;
+}
+if (range) { range.addEventListener('input', updateSlider); updateSlider(); }
+
+// Loader
+document.getElementById('uploadForm').addEventListener('submit', () => {
+  document.getElementById('loader').classList.add('active');
+});
+
+// Scroll to result
+window.addEventListener('load', () => {
+  const r = document.getElementById('resultSection');
+  if (r) r.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+
+// ─── Particle canvas ───
+const canvas = document.getElementById('neuralCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+class P {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * W;
+    this.y = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.35;
+    this.vy = (Math.random() - 0.5) * 0.35;
+    this.r = Math.random() * 1.5 + 0.5;
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > W) this.vx *= -1;
+    if (this.y < 0 || this.y > H) this.vy *= -1;
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(217,124,42,0.35)';
+    ctx.fill();
+  }
+}
+
+function init() {
+  particles = Array.from({length: Math.floor(W / 18)}, () => new P());
+}
+
+function loop() {
+  ctx.clearRect(0, 0, W, H);
+  for (let i = 0; i < particles.length; i++) {
+    particles[i].update();
+    particles[i].draw();
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const d = Math.hypot(dx, dy);
+      if (d < 90) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(217,124,42,${0.12 * (1 - d / 90)})`;
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize', () => { resize(); init(); });
+resize(); init(); loop();
+</script>
+</body>
+</html>
