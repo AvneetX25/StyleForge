@@ -7,7 +7,6 @@ A Flask web application for **Neural Style Transfer** using **AdaIN (Adaptive In
 <!-- PASTE THE GITHUB-GENERATED VIDEO LINK HERE AFTER DRAG-AND-DROP UPLOAD -->
 <!-- Example format: https://github.com/user-attachments/assets/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx -->
 
-> 📹 To add: edit this README on GitHub's web UI and drag `demo.mp4` directly into the editor — it will auto-generate a playable embed link above.
 
 ## Features
 
@@ -49,7 +48,11 @@ StyleForge/
 The pretrained model weights are **not included in this repository** (too large for git). Download them separately and place them in the correct folders:
 
 - `vgg_normalised.pth` → place in the project root
-- `decoder_final.pth` → place in `experiment/`
+
+
+https://github.com/user-attachments/assets/9920fcbd-92bf-4975-a0d1-8f33fc178cb8
+
+
 
 <!-- ADD YOUR DOWNLOAD LINK(S) HERE, e.g. Google Drive / Hugging Face -->
 
